@@ -75,7 +75,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
   @override
   void dispose() {
     _focusNode.dispose();
-    controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
