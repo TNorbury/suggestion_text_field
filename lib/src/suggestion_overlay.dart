@@ -90,13 +90,15 @@ class SuggestionOverlay extends StatelessWidget {
                           child: Container(
                             height: 56,
                             child: InkWell(
-                              onTap: () {
-                                // TODO: Tell controller that something was selected
-                              },
-                              child: Row(
-                                children: [
-                                  Text(suggestion),
-                                ],
+                              onTap: () =>
+                                  controller.suggestionSelected(suggestion),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Text(suggestion),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

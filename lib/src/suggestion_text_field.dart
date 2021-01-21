@@ -5,6 +5,16 @@ import 'package:suggestion_text_field/src/suggestion_text_field_controller.dart'
 import 'suggestion_overlay.dart';
 
 typedef GetSuggestionsCallback = List<String> Function(String);
+typedef FieldSubmittedCallback = void Function(String);
+
+/// The action that should be performed when a suggestion is selected
+enum SuggestionSelectionAction {
+  /// The selected suggestion is set at the value of the text field.
+  Insert,
+
+  /// Submits the selection and clear the text field
+  Submit,
+}
 
 /// A text field that, when focused and text is entered in it, will show a list
 /// of suggested items. Clicking on one of these suggested items will put that
@@ -12,16 +22,29 @@ typedef GetSuggestionsCallback = List<String> Function(String);
 class SuggestionTextField extends StatefulWidget {
   /// Function that is called when the field is submitted. The contents of the
   /// field will be passed to this function.
-  final Function(String) textSubmitted;
+  final FieldSubmittedCallback textSubmitted;
 
   /// Whenever the entered text changes, this function will be called and
   /// should return a list of strings that will be displayed in the suggestion
   /// menu
   final GetSuggestionsCallback getSuggestions;
 
+  /// Defines what happens when a suggestion is selected from the overlay.
+  /// Default is [SuggestionSelectionAction.Insert]
+  final SuggestionSelectionAction selectionAction;
+
+  /// Sets [TextField.style]
+  final TextStyle style;
+
+  /// Sets [TextField.decoration]
+  final InputDecoration decoration;
+
   SuggestionTextField({
     @required this.getSuggestions,
     @required this.textSubmitted,
+    this.selectionAction = SuggestionSelectionAction.Insert,
+    this.style,
+    this.decoration,
     Key key,
   }) : super(key: key);
 
@@ -40,8 +63,11 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
   void initState() {
     super.initState();
 
-    controller =
-        SuggestionTextFieldController(getSuggestions: widget.getSuggestions);
+    controller = SuggestionTextFieldController(
+      getSuggestions: widget.getSuggestions,
+      selectionAction: widget.selectionAction,
+      fieldSubmittedCallback: _submitField,
+    );
 
     _focusNode.addListener(_toggleOverlay);
   }
@@ -51,6 +77,12 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
     _focusNode.dispose();
     controller.dispose();
     super.dispose();
+  }
+
+  /// Submits the text given to this method and clear the input
+  void _submitField(String enteredText) {
+    widget.textSubmitted?.call(enteredText);
+    controller.clearText();
   }
 
   /// Toggles the suggestion overlay.
@@ -76,18 +108,15 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
     return CompositedTransformTarget(
       link: _layerLink,
       child: TextField(
+        style: widget.style,
         focusNode: _focusNode,
-        decoration:
-            InputDecoration(hintText: "Enter a tag and press enter to add"),
+        decoration: widget.decoration,
         controller: controller.textEditingController,
         onChanged: (enteredText) {
           controller.textChanged();
           _toggleOverlay();
         },
-        onSubmitted: (enteredText) {
-          widget.textSubmitted?.call(controller.enteredText);
-          controller.clearText();
-        },
+        onSubmitted: _submitField,
       ),
     );
   }
