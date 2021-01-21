@@ -38,20 +38,25 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SuggestionTextField(
-              getSuggestions: (String text) {
-                return text.split(" ");
-              },
-              textSubmitted: (String submittedText) {
-                setState(() {
-                  submittedTexts.add(submittedText);
-                });
-              },
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SuggestionTextField(
+                decoration: InputDecoration(hintText: "Enter some text!"),
+                getSuggestions: (String text) {
+                  return text.split(" ");
+                },
+                textSubmitted: (String submittedText) {
+                  setState(() {
+                    submittedTexts.add(submittedText);
+                  });
+                },
+              ),
+              for (String text in submittedTexts) Text(text)
+            ],
+          ),
         ),
       ),
     );
