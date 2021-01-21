@@ -63,6 +63,26 @@ void main() {
       expect(textSubmitted, true);
     },
   );
+
+  testWidgets(
+    "Insert action put text into field",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(TestApp(SuggestionTextField(
+        selectionAction: SuggestionSelectionAction.Insert,
+        decoration: InputDecoration(hintText: "Test"),
+        getSuggestions: (text) {
+          return text.split(" ");
+        },
+        textSubmitted: (text) {},
+      )));
+
+      await tester.enterText(find.byType(SuggestionTextField), "Hello World");
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(Row, "Hello"));
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(SuggestionTextField, "Hello"), findsOneWidget);
+    },
+  );
 }
 
 class TestApp extends StatelessWidget {

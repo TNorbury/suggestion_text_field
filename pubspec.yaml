@@ -1,6 +1,6 @@
 name: suggestion_text_field
-description: A new Flutter package project.
-version: 0.1.0
+description: Text field that provides a pop-up with suggestions.
+version: 0.2.0
 author:
 homepage:
 
