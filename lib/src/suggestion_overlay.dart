@@ -68,11 +68,11 @@ class SuggestionOverlay extends StatelessWidget {
         return Visibility(
           visible: numEntries >= 1,
           child: Positioned(
-            width: size.width / 2,
+            width: size.width * 0.9,
             child: CompositedTransformFollower(
               link: layerLink,
               showWhenUnlinked: false,
-              offset: Offset(0.0, overlayOffset),
+              offset: Offset((size.width * 0.1) / 2, overlayOffset),
               child: ConstrainedBox(
                 // Always shown at least one entry
                 constraints: BoxConstraints(
@@ -95,8 +95,14 @@ class SuggestionOverlay extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(suggestion),
+                                    Flexible(
+                                      child: Text(
+                                        suggestion,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
