@@ -83,6 +83,9 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
   void _submitField(String enteredText) {
     widget.textSubmitted?.call(enteredText);
     controller.clearText();
+
+    FocusScope.of(context).requestFocus(_focusNode);
+    _toggleOverlay();
   }
 
   /// Toggles the suggestion overlay.
@@ -116,7 +119,9 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
           controller.textChanged();
           _toggleOverlay();
         },
-        onSubmitted: _submitField,
+        onSubmitted: (text) {
+          _submitField(text);
+        },
       ),
     );
   }
