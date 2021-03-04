@@ -13,8 +13,8 @@ class SuggestionOverlay extends StatelessWidget {
   final LayerLink layerLink;
 
   const SuggestionOverlay({
-    @required this.textFieldContext,
-    @required this.layerLink,
+    required this.textFieldContext,
+    required this.layerLink,
     key,
   }) : super(key: key);
 
@@ -27,7 +27,8 @@ class SuggestionOverlay extends StatelessWidget {
         // The number of entries to display in the overlay
         int numEntries = min(5, suggestions.length);
 
-        RenderBox renderBox = textFieldContext.findRenderObject();
+        RenderBox renderBox =
+            (textFieldContext.findRenderObject() as RenderBox);
         var size = renderBox.size;
         var offset = renderBox.localToGlobal(Offset.zero);
 

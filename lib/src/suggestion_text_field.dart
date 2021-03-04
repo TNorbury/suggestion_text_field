@@ -34,18 +34,18 @@ class SuggestionTextField extends StatefulWidget {
   final SuggestionSelectionAction selectionAction;
 
   /// Sets [TextField.style]
-  final TextStyle style;
+  final TextStyle? style;
 
   /// Sets [TextField.decoration]
-  final InputDecoration decoration;
+  final InputDecoration? decoration;
 
   SuggestionTextField({
-    @required this.getSuggestions,
-    @required this.textSubmitted,
+    required this.getSuggestions,
+    required this.textSubmitted,
     this.selectionAction = SuggestionSelectionAction.Insert,
     this.style,
     this.decoration,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -53,9 +53,9 @@ class SuggestionTextField extends StatefulWidget {
 }
 
 class _SuggestionTextFieldState extends State<SuggestionTextField> {
-  SuggestionTextFieldController controller;
+  late SuggestionTextFieldController controller;
 
-  OverlayEntry _overlayEntry;
+  OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   final FocusNode _focusNode = FocusNode();
 
@@ -81,7 +81,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
 
   /// Submits the text given to this method and clear the input
   void _submitField(String enteredText) {
-    widget.textSubmitted?.call(enteredText);
+    widget.textSubmitted.call(enteredText);
     controller.clearText();
 
     FocusScope.of(context).requestFocus(_focusNode);
@@ -94,12 +94,12 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
       if (_overlayEntry == null) {
         setState(() {
           _overlayEntry = _createSuggestionOverlayEntry();
-          Overlay.of(context).insert(_overlayEntry);
+          Overlay.of(context)?.insert(_overlayEntry!);
         });
       }
     } else {
       if (_overlayEntry != null) {
-        _overlayEntry.remove();
+        _overlayEntry!.remove();
 
         _overlayEntry = null;
       }

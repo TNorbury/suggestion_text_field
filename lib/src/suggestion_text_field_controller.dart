@@ -14,9 +14,9 @@ class SuggestionTextFieldController extends ChangeNotifier {
   List<String> _suggestions = [];
 
   SuggestionTextFieldController({
-    @required GetSuggestionsCallback getSuggestions,
-    @required SuggestionSelectionAction selectionAction,
-    @required FieldSubmittedCallback fieldSubmittedCallback,
+    required GetSuggestionsCallback getSuggestions,
+    required SuggestionSelectionAction selectionAction,
+    required FieldSubmittedCallback fieldSubmittedCallback,
   })  : _getSuggestions = getSuggestions,
         _selectionAction = selectionAction,
         _textSubmitted = fieldSubmittedCallback;
