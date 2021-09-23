@@ -1,7 +1,6 @@
 name: suggestion_text_field
 description: Text field that provides a pop-up with suggestions.
-version: 0.3.0
-author:
+version: 0.3.0+1
 homepage:
 
 environment:
@@ -9,7 +8,7 @@ environment:
     flutter: ">=1.17.0"
 
 dependencies:
-    provider: ^5.0.0
+    provider: ^6.0.0
     flutter:
         sdk: flutter
 
